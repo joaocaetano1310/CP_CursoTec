@@ -13,7 +13,8 @@ public class Turma : BaseEntity
     public Professor? Professor { get; private set; }
     
     public ICollection<Aula> Aulas { get; private set; } = new List<Aula>();
-
+    public ICollection<Aluno> Alunos { get; private set; } = new List<Aluno>();
+    
     public Turma(Guid id, string NomeTurma, DateTime dataInicio, DateTime? dataFim, Guid professorId, Curso? curso, Professor? professor)
     {
         Id = id;

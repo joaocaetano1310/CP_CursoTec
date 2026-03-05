@@ -10,6 +10,9 @@ public class Aluno : BaseEntity
     public string Cpf { get; private set; }
     public DateOnly DataNascimento { get; private set; }
     
+    public Guid TurmaId { get; private set; }
+    public Turma? Turma { get; private set; }
+    
     public Aluno(string nome, string email, string cpf, DateOnly datanascimento)
     {
         Nome = nome;
@@ -45,8 +48,8 @@ public class Aluno : BaseEntity
     {
         var age = CalculateAge(newDate);
         
-        if (age < 13)
-            throw new Exception("Usuário deve ter pelo menos 13 anos.");
+        if (age < 17)
+            throw new Exception("Usuário deve ter pelo menos 17 anos.");
 
         DataNascimento = newDate;
     }
