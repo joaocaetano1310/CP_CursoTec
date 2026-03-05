@@ -15,6 +15,10 @@
 
 <hr>
 
+## 👥 Integrantes
+* **João Victor Caetano Alves da Silva** — RM: 562074
+* **João Victor Bueno Castelini da Silva** — RM: 564115
+* **Raul Rezende Iemini Aguiar** — RM: 564002
 ## 📖 Sobre o Projeto
 
 O **CursoTec** é uma Web API desenvolvida em **.NET 10** cujo objetivo é fornecer a infraestrutura de backend para uma instituição de ensino técnico. O sistema permite o registo e validação de regras de negócio essenciais para garantir a integridade dos dados da instituição.
