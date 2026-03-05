@@ -28,14 +28,14 @@ public class Aula : BaseEntity
         UpdateFim(horaFim);
     }
 
-    public void UpdateFim(TimeOnly horaFim)
+    public void UpdateFim(TimeOnly newHoraFim)
     {
-        HoraFim = horaFim;
+        HoraFim = newHoraFim;
     }
     
-    public void UpdateInicio(TimeOnly horaInicio)
+    public void UpdateInicio(TimeOnly newHoraInicio)
     {
-        HoraInicio = horaInicio;
+        HoraInicio = newHoraInicio;
     }
 
     public void UpdateData(DateTime newData)
