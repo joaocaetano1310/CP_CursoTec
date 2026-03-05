@@ -1,6 +1,8 @@
+using CP1_CursoTec.Domain.Commom;
+
 namespace CP1_CursoTec.Domain.Entities;
 
-public class Aula
+public class Aula : BaseEntity
 {
     public Guid Id { get; private set; }
     public Guid TurmaId { get; private set; }
@@ -18,4 +20,5 @@ public class Aula
         HoraFim = horaFim;
         Turma = turma;
     }
+    
 }
