@@ -8,11 +8,14 @@ public class Professor : BaseEntity
     public string Nome { get; private set; } 
     public string Email { get; private set; } 
     public string? Especialidade { get; private set; }
+    
+    public Turma? Turma { get; private set; }
 
-    public Professor(string nome, string email, string? especialidade)
+    public Professor(string nome, string email, string? especialidade, Turma turma)
     {
         Nome = nome;
         Email = email;
         Especialidade = especialidade;
+        Turma = turma;
     }
 }

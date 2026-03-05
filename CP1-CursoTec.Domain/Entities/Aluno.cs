@@ -4,21 +4,21 @@ namespace CP1_CursoTec.Domain.Entities;
 
 public class Aluno : BaseEntity
 {
-    public Guid Id { get; private set; }
+    public Guid AlunoId { get; private set; }
     public string Nome { get; private set; }
     public string Email { get; private set; }
     public string Cpf { get; private set; }
     public DateOnly DataNascimento { get; private set; }
     
-    public Guid TurmaId { get; private set; }
     public Turma? Turma { get; private set; }
     
-    public Aluno(string nome, string email, string cpf, DateOnly datanascimento)
+    public Aluno(string nome, string email, string cpf, DateOnly datanascimento, Turma? turma)
     {
         Nome = nome;
         Email = email;
         Cpf = cpf;
         DataNascimento = datanascimento;
+        Turma = turma;
     }
     
     public Aluno(string name, string email, DateOnly dateBorn)
