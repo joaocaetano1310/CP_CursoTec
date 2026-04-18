@@ -1,0 +1,23 @@
+/CP1-CursoTec.sln
+# Build
+bin/
+obj/
+
+# Rider / IntelliJ
+.idea/
+
+# Visual Studio
+.vs/
+
+# User files
+*.user
+*.suo
+
+# Logs
+*.log
+
+# Cache
+*.cache
+
+# Database local
+*.db
