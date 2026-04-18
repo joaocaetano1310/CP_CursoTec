@@ -33,7 +33,6 @@ O sistema representa a estrutura de uma instituição de ensino, permitindo orga
 * Cursos
 * Turmas
 * Salas
-* Matrículas
 
 ---
 
@@ -43,10 +42,7 @@ O sistema representa a estrutura de uma instituição de ensino, permitindo orga
 * **Professor**
 * **Curso**
 * **Turma**
-* **Sala**
-* **Matricula**
 * **Aula**
-* **Avaliacao**
 
 Todas as entidades possuem chave primária (**PK**) baseada em **GUID**, conforme padrão adotado no projeto.
 
@@ -59,7 +55,6 @@ Todas as entidades possuem chave primária (**PK**) baseada em **GUID**, conform
 * **Sala 1:N Turma (opcional em Turma)**
 * **Turma 1:N Aula**
 * **Aluno N:N Turma (via Matricula)**
-* **Matricula 1:N Avaliacao**
 
 ---
 
