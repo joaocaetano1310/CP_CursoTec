@@ -2,44 +2,41 @@ using CP1_CursoTec.Domain.Commom;
 
 namespace CP1_CursoTec.Domain.Entities;
 
-// 1. Adicionar a herança : BaseEntity
 public class Curso : BaseEntity
 {
-    public string Nome { get; private set; }
+    public string Nome { get; private set; } = string.Empty;
     public int CargaHoraria { get; private set; }
     public string? Descricao { get; private set; }
-    
-    public ICollection<Turma> Turmas { get; set; } = new List<Turma>();
 
-    // 2. Construtor vazio protegido para o Entity Framework
+    public ICollection<Turma> Turmas { get; private set; } = new List<Turma>();
+
     protected Curso() { }
 
     public Curso(string nome, int cargaHoraria, string? descricao)
     {
-        Nome = nome;
-        CargaHoraria = cargaHoraria;
-        Descricao = descricao;
-    }
-    
-    public Curso(string nome, string descricao)
-    {
         UpdateNome(nome);
-        UpdateDescricao(descricao);
+        UpdateCargaHoraria(cargaHoraria);
+        Descricao = descricao;
     }
 
     public void UpdateNome(string newName)
     {
         if (string.IsNullOrWhiteSpace(newName))
             throw new Exception("Nome não pode ser vazio.");
-        
+
         Nome = newName;
     }
-    
-    public void UpdateDescricao(string newDescricao)
+
+    public void UpdateCargaHoraria(int cargaHoraria)
     {
-        if (string.IsNullOrWhiteSpace(newDescricao))
-            throw new Exception("Necessita de uma descrição.");
-        
+        if (cargaHoraria <= 0)
+            throw new Exception("A carga horária deve ser maior que zero.");
+
+        CargaHoraria = cargaHoraria;
+    }
+
+    public void UpdateDescricao(string? newDescricao)
+    {
         Descricao = newDescricao;
     }
 }

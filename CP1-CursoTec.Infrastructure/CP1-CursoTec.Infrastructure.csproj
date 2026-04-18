@@ -1,5 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <RootNamespace>CP1_CursoTec.Infrastructure</RootNamespace>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
   <ItemGroup>
     <ProjectReference Include="..\CP1-CursoTec.Domain\CP1-CursoTec.Domain.csproj" />
     <ProjectReference Include="..\CP1-CursoTec.Application\CP1-CursoTec.Application.csproj" />
@@ -10,25 +17,5 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="10.0.6" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="10.0.6" />
   </ItemGroup>
-
-  <ItemGroup>
-    <Compile Remove="Repositories\**" />
-    <Compile Remove="Repositoryes\AlunoRepository.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <EmbeddedResource Remove="Repositories\**" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Remove="Repositories\**" />
-  </ItemGroup>
-
-  <PropertyGroup>
-    <TargetFramework>net10.0</TargetFramework>
-    <RootNamespace>CP1_CursoTec.Infrastructure</RootNamespace>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-  </PropertyGroup>
 
 </Project>
