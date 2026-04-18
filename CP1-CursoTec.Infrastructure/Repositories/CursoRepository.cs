@@ -3,7 +3,7 @@ using CP1_CursoTec.Domain.Entities;
 using CP1_CursoTec.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 
-namespace CP1_CursoTec.Infrastructure.Repositorys;
+namespace CP1_CursoTec.Infrastructure.Repositories;
 
 public class CursoRepository : ICursoRepository
 {
