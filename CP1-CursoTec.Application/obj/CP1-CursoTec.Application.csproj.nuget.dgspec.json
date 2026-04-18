@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\joaov\\OneDrive\\Desktop\\CP1-CursoTec\\CP1-CursoTec.Application\\CP1-CursoTec.Application.csproj": {}
+    "C:\\Users\\User\\RiderProjects\\CP1_CursoTec\\CP1-CursoTec.Application\\CP1-CursoTec.Application.csproj": {}
   },
   "projects": {
-    "C:\\Users\\joaov\\OneDrive\\Desktop\\CP1-CursoTec\\CP1-CursoTec.Application\\CP1-CursoTec.Application.csproj": {
+    "C:\\Users\\User\\RiderProjects\\CP1_CursoTec\\CP1-CursoTec.Application\\CP1-CursoTec.Application.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\joaov\\OneDrive\\Desktop\\CP1-CursoTec\\CP1-CursoTec.Application\\CP1-CursoTec.Application.csproj",
+        "projectUniqueName": "C:\\Users\\User\\RiderProjects\\CP1_CursoTec\\CP1-CursoTec.Application\\CP1-CursoTec.Application.csproj",
         "projectName": "CP1-CursoTec.Application",
-        "projectPath": "C:\\Users\\joaov\\OneDrive\\Desktop\\CP1-CursoTec\\CP1-CursoTec.Application\\CP1-CursoTec.Application.csproj",
-        "packagesPath": "C:\\Users\\joaov\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\joaov\\OneDrive\\Desktop\\CP1-CursoTec\\CP1-CursoTec.Application\\obj\\",
+        "projectPath": "C:\\Users\\User\\RiderProjects\\CP1_CursoTec\\CP1-CursoTec.Application\\CP1-CursoTec.Application.csproj",
+        "packagesPath": "C:\\Users\\User\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\User\\RiderProjects\\CP1_CursoTec\\CP1-CursoTec.Application\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\joaov\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\User\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net10.0"
@@ -26,8 +26,8 @@
           "net10.0": {
             "targetAlias": "net10.0",
             "projectReferences": {
-              "C:\\Users\\joaov\\OneDrive\\Desktop\\CP1-CursoTec\\CP1-CursoTec.Domain\\CP1-CursoTec.Domain.csproj": {
-                "projectPath": "C:\\Users\\joaov\\OneDrive\\Desktop\\CP1-CursoTec\\CP1-CursoTec.Domain\\CP1-CursoTec.Domain.csproj"
+              "C:\\Users\\User\\RiderProjects\\CP1_CursoTec\\CP1-CursoTec.Domain\\CP1-CursoTec.Domain.csproj": {
+                "projectPath": "C:\\Users\\User\\RiderProjects\\CP1_CursoTec\\CP1-CursoTec.Domain\\CP1-CursoTec.Domain.csproj"
               }
             }
           }
@@ -63,7 +63,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Users\\joaov\\.dotnet\\sdk\\10.0.103/PortableRuntimeIdentifierGraph.json",
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.102/PortableRuntimeIdentifierGraph.json",
           "packagesToPrune": {
             "Microsoft.CSharp": "(,4.7.32767]",
             "Microsoft.VisualBasic": "(,10.4.32767]",
@@ -341,17 +341,17 @@
         }
       }
     },
-    "C:\\Users\\joaov\\OneDrive\\Desktop\\CP1-CursoTec\\CP1-CursoTec.Domain\\CP1-CursoTec.Domain.csproj": {
+    "C:\\Users\\User\\RiderProjects\\CP1_CursoTec\\CP1-CursoTec.Domain\\CP1-CursoTec.Domain.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\joaov\\OneDrive\\Desktop\\CP1-CursoTec\\CP1-CursoTec.Domain\\CP1-CursoTec.Domain.csproj",
+        "projectUniqueName": "C:\\Users\\User\\RiderProjects\\CP1_CursoTec\\CP1-CursoTec.Domain\\CP1-CursoTec.Domain.csproj",
         "projectName": "CP1-CursoTec.Domain",
-        "projectPath": "C:\\Users\\joaov\\OneDrive\\Desktop\\CP1-CursoTec\\CP1-CursoTec.Domain\\CP1-CursoTec.Domain.csproj",
-        "packagesPath": "C:\\Users\\joaov\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\joaov\\OneDrive\\Desktop\\CP1-CursoTec\\CP1-CursoTec.Domain\\obj\\",
+        "projectPath": "C:\\Users\\User\\RiderProjects\\CP1_CursoTec\\CP1-CursoTec.Domain\\CP1-CursoTec.Domain.csproj",
+        "packagesPath": "C:\\Users\\User\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\User\\RiderProjects\\CP1_CursoTec\\CP1-CursoTec.Domain\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\joaov\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\User\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net10.0"
@@ -396,7 +396,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Users\\joaov\\.dotnet\\sdk\\10.0.103/PortableRuntimeIdentifierGraph.json",
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.102/PortableRuntimeIdentifierGraph.json",
           "packagesToPrune": {
             "Microsoft.CSharp": "(,4.7.32767]",
             "Microsoft.VisualBasic": "(,10.4.32767]",

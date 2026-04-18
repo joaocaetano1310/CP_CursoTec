@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("CP1-CursoTec.Infrastructure")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+352b28545115227ab4576ff2306acf19b9545e9e")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+c4bd628491c614258f998ef20840d859810b245a")]
 [assembly: System.Reflection.AssemblyProductAttribute("CP1-CursoTec.Infrastructure")]
 [assembly: System.Reflection.AssemblyTitleAttribute("CP1-CursoTec.Infrastructure")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

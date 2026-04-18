@@ -2527,19 +2527,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\joaov\\.nuget\\packages\\": {}
+    "C:\\Users\\User\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\joaov\\OneDrive\\Desktop\\CP1-CursoTec\\CP1-CursoTec.API\\CP1-CursoTec.API.csproj",
+      "projectUniqueName": "C:\\Users\\User\\RiderProjects\\CP1_CursoTec\\CP1-CursoTec.API\\CP1-CursoTec.API.csproj",
       "projectName": "CP1-CursoTec.API",
-      "projectPath": "C:\\Users\\joaov\\OneDrive\\Desktop\\CP1-CursoTec\\CP1-CursoTec.API\\CP1-CursoTec.API.csproj",
-      "packagesPath": "C:\\Users\\joaov\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\joaov\\OneDrive\\Desktop\\CP1-CursoTec\\CP1-CursoTec.API\\obj\\",
+      "projectPath": "C:\\Users\\User\\RiderProjects\\CP1_CursoTec\\CP1-CursoTec.API\\CP1-CursoTec.API.csproj",
+      "packagesPath": "C:\\Users\\User\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\User\\RiderProjects\\CP1_CursoTec\\CP1-CursoTec.API\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\joaov\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        "C:\\Users\\User\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net10.0"
@@ -2551,11 +2551,11 @@
         "net10.0": {
           "targetAlias": "net10.0",
           "projectReferences": {
-            "C:\\Users\\joaov\\OneDrive\\Desktop\\CP1-CursoTec\\CP1-CursoTec.Application\\CP1-CursoTec.Application.csproj": {
-              "projectPath": "C:\\Users\\joaov\\OneDrive\\Desktop\\CP1-CursoTec\\CP1-CursoTec.Application\\CP1-CursoTec.Application.csproj"
+            "C:\\Users\\User\\RiderProjects\\CP1_CursoTec\\CP1-CursoTec.Application\\CP1-CursoTec.Application.csproj": {
+              "projectPath": "C:\\Users\\User\\RiderProjects\\CP1_CursoTec\\CP1-CursoTec.Application\\CP1-CursoTec.Application.csproj"
             },
-            "C:\\Users\\joaov\\OneDrive\\Desktop\\CP1-CursoTec\\CP1-CursoTec.Infrastructure\\CP1-CursoTec.Infrastructure.csproj": {
-              "projectPath": "C:\\Users\\joaov\\OneDrive\\Desktop\\CP1-CursoTec\\CP1-CursoTec.Infrastructure\\CP1-CursoTec.Infrastructure.csproj"
+            "C:\\Users\\User\\RiderProjects\\CP1_CursoTec\\CP1-CursoTec.Infrastructure\\CP1-CursoTec.Infrastructure.csproj": {
+              "projectPath": "C:\\Users\\User\\RiderProjects\\CP1_CursoTec\\CP1-CursoTec.Infrastructure\\CP1-CursoTec.Infrastructure.csproj"
             }
           }
         }
@@ -2606,7 +2606,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Users\\joaov\\.dotnet\\sdk\\10.0.103/PortableRuntimeIdentifierGraph.json",
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.102/PortableRuntimeIdentifierGraph.json",
         "packagesToPrune": {
           "Microsoft.AspNetCore": "(,10.0.32767]",
           "Microsoft.AspNetCore.Antiforgery": "(,10.0.32767]",
