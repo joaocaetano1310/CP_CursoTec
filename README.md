@@ -1,4 +1,4 @@
-<h1 align="center">🎓 CP2 - CursoTec</h1>
+<h1 align="center">🎓 CP - CursoTec</h1>
 
 <p align="center">
 <img src="https://img.shields.io/badge/.NET-10-purple"/>
