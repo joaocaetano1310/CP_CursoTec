@@ -25,10 +25,10 @@ public class ProfessorConfiguration : IEntityTypeConfiguration<Professor>
 
         builder.Property(p => p.Especialidade)
             .HasMaxLength(150);
-        
-        builder.HasOne(p => p.Turma)
+
+        builder.HasMany(p => p.Turmas)
             .WithOne(t => t.Professor)
-            .HasForeignKey<Turma>(t => t.ProfessorId)
+            .HasForeignKey(t => t.ProfessorId)
             .OnDelete(DeleteBehavior.Restrict);
     }
 }

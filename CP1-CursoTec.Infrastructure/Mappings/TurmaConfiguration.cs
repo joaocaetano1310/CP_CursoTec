@@ -21,12 +21,12 @@ public class TurmaConfiguration : IEntityTypeConfiguration<Turma>
 
         builder.Property(t => t.DataFim)
             .IsRequired(false);
-        
+
         builder.HasOne(t => t.Professor)
-            .WithMany()
+            .WithMany(p => p.Turmas)
             .HasForeignKey(t => t.ProfessorId)
             .OnDelete(DeleteBehavior.Restrict);
-        
+
         builder.HasOne(t => t.Curso)
             .WithMany(c => c.Turmas)
             .HasForeignKey("CursoId")

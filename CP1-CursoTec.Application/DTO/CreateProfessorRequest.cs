@@ -1,11 +1,8 @@
-using CP1_CursoTec.Domain.Entities;
-
 namespace CP1_CursoTec.Application.DTO;
 
-public class CreateProfessorRequest(string nome, string email, string? especialidade, Turma turma)
+public class CreateProfessorRequest
 {
-    public Professor ToDomain()
-    {
-        return new Professor(nome, email, especialidade, turma);
-    }
+    public string Nome { get; set; } = string.Empty;
+    public string Email { get; set; } = string.Empty;
+    public string Especialidade { get; set; } = string.Empty;
 }

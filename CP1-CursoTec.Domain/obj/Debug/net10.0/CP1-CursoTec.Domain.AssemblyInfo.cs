@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("CP1-CursoTec.Domain")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+c4bd628491c614258f998ef20840d859810b245a")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+aac6ebe0e9028ab315428cd34cfe8293a811e95c")]
 [assembly: System.Reflection.AssemblyProductAttribute("CP1-CursoTec.Domain")]
 [assembly: System.Reflection.AssemblyTitleAttribute("CP1-CursoTec.Domain")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

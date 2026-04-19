@@ -17,14 +17,14 @@ public class ProfessorRepository : IProfessorRepository
     public async Task<Professor?> GetByIdAsync(Guid id)
     {
         return await _context.Professores
-            .Include(p => p.Turma)
+            .Include(p => p.Turmas)
             .FirstOrDefaultAsync(p => p.Id == id);
     }
 
     public async Task<IEnumerable<Professor>> GetAllAsync()
     {
         return await _context.Professores
-            .Include(p => p.Turma)
+            .Include(p => p.Turmas)
             .ToListAsync();
     }
 
