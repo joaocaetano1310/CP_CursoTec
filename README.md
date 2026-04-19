@@ -1,23 +1,24 @@
-<h1 align="center">🎓 CP1 - CursoTec API</h1>
+<h1 align="center">🎓 CP - CursoTec</h1>
 
 <p align="center">
 <img src="https://img.shields.io/badge/.NET-10-purple"/>
 <img src="https://img.shields.io/badge/C%23-Language-green"/>
-<img src="https://img.shields.io/badge/Swagger-API-green"/>
+<img src="https://img.shields.io/badge/EntityFramework-Core-blue"/>
+<img src="https://img.shields.io/badge/Database-SQLite-lightgrey"/>
 <img src="https://img.shields.io/badge/Architecture-Clean-black"/>
 </p>
 
 <p align="center">
-Sistema backend de gestão acadêmica concebido para administrar alunos, professores e cursos técnicos.
+Sistema backend de gestão acadêmica com persistência de dados utilizando Entity Framework Core.
 </p>
 
 ---
 
 # 👥 Integrantes
 
-- **João Victor Caetano Alves da Silva** — RM: 562074  
-- **João Victor Bueno Castelini da Silva** — RM: 564115  
-- **Raul Rezende Iemini Aguiar** — RM: 564002  
+* **João Victor Caetano Alves da Silva** — RM: 562074
+* **João Victor Bueno Castelini da Silva** — RM: 564115
+* **Raul Rezende Iemini Aguiar** — RM: 564002
 
 ---
 
@@ -25,94 +26,161 @@ Sistema backend de gestão acadêmica concebido para administrar alunos, profess
 
 O domínio escolhido foi **Gestão Acadêmica de Cursos Técnicos**.
 
-O sistema representa a estrutura básica de uma instituição de ensino, permitindo organizar **alunos, professores, cursos e turmas**, bem como o acompanhamento das **matrículas e avaliações** realizadas ao longo do curso.
+O sistema representa a estrutura de uma instituição de ensino, permitindo organizar:
+
+* Alunos
+* Professores
+* Cursos
+* Turmas
+* Salas
 
 ---
 
 # 🧩 Entidades Modeladas
 
-As seguintes entidades foram definidas no modelo:
+* **Aluno**
+* **Professor**
+* **Curso**
+* **Turma**
+* **Aula**
 
-- **Aluno**
-- **Professor**
-- **Curso**
-- **Turma**
-- **Sala**
-
-Cada entidade possui atributos próprios e uma **chave primária (PK)** responsável por identificar cada registro de forma única.
+Todas as entidades possuem chave primária (**PK**) baseada em **GUID**, conforme padrão adotado no projeto.
 
 ---
 
-# 🔗 Resumo dos Relacionamentos
+# 🔗 Relacionamentos
 
-Os principais relacionamentos entre as entidades são:
-
-- **Curso 1:N Turma**  
-  Um curso pode possuir várias turmas.
-
-- **Professor 1:N Turma**  
-  Um professor pode ministrar várias turmas.
-
-- **Sala 1:N Turma**  
-  Uma sala pode ser utilizada por várias turmas ao longo do tempo.
-
-- **Aluno N:N Turma**  
-  Um aluno pode participar de várias turmas e uma turma pode ter vários alunos.  
-  Esse relacionamento é realizado através da entidade **Matricula**.
+* **Curso 1:N Turma**
+* **Professor 1:N Turma**
+* **Sala 1:N Turma (opcional em Turma)**
+* **Turma 1:N Aula**
+* **Aluno N:N Turma (via Matricula)**
 
 ---
 
-# 🗂 Estrutura do Repositório
+# 🏗️ Arquitetura
+
+O projeto segue o padrão **Clean Architecture**, organizado em camadas:
 
 ```
 CP1-CursoTec
 
-/docs
-   mer.png
-
-/src
-   CP1-CursoTec.Api
-   CP1-CursoTec.Application
-   CP1-CursoTec.Domain
-
-README.md
+CP1-CursoTec.API
+CP1-CursoTec.Application
+CP1-CursoTec.Domain
+CP1-CursoTec.Infrastructure
 ```
 
-- **/docs/mer.png** → Diagrama MER do sistema  
-- **/src** → Código fonte organizado em camadas seguindo **Clean Architecture**
+### 📦 Responsibilities
+
+* **API** → Configuração da aplicação e injeção de dependência
+* **Application** → Interfaces de repositório
+* **Domain** → Entidades e regras de negócio
+* **Infrastructure** → Persistência, EF Core, Mappings e Repositories
+
+---
+
+# 🗄️ Persistência de Dados
+
+A persistência foi implementada utilizando:
+
+* **Entity Framework Core**
+* **SQLite**
+
+## 🔹 DbContext
+
+Classe responsável por representar o banco de dados:
+
+* `ApplicationDbContext`
+
+## 🔹 Mapeamento (Fluent API)
+
+As entidades foram configuradas utilizando:
+
+* `IEntityTypeConfiguration<T>`
+* Definição de:
+
+  * Tabelas
+  * Chaves primárias
+  * Relacionamentos
+  * Índices
+
+## 🔹 Repositórios
+
+Implementação do padrão Repository:
+
+* Interfaces na camada **Application**
+* Implementações na camada **Infrastructure**
+
+Exemplo:
+
+* `IAlunoRepository`
+* `AlunoRepository`
+
+---
+
+# ⚙️ Migrations
+
+O banco de dados é gerado através de migrations do EF Core.
+
+### Criar migration:
+
+```bash
+dotnet ef migrations add InitialCreate
+```
+
+### Atualizar banco:
+
+```bash
+dotnet ef database update
+```
+
+---
+
+# 🔌 Injeção de Dependência
+
+Os serviços foram registrados no `Program.cs`:
+
+```csharp
+builder.Services.AddScoped<IAlunoRepository, AlunoRepository>();
+```
 
 ---
 
 # 🧠 Regras de Domínio
 
 ### 👨‍🎓 Aluno
-- O nome é obrigatório
-- O e-mail deve conter **@**
-- O aluno deve ter **no mínimo 17 anos**
+
+* Nome obrigatório
+* E-mail válido
+* Idade mínima de 17 anos
 
 ### 👨‍🏫 Professor
-- Nome obrigatório
-- E-mail válido
-- Especialidade obrigatória
+
+* Nome obrigatório
+* E-mail válido
+* Especialidade obrigatória
 
 ### 📚 Curso
-- Nome não pode ser vazio
-- Carga horária deve ser definida
+
+* Nome obrigatório
+* Carga horária definida
 
 ---
 
-# 📌 Observação
+# 📌 Observações
 
-Este projeto tem como objetivo **apenas a modelagem do domínio e do MER**, conforme solicitado na atividade.
+Este projeto implementa:
 
-Não foram implementados:
+✔ Persistência com EF Core
+✔ Mapeamento com Fluent API
+✔ Repositórios
+✔ Clean Architecture
 
-- CRUD
-- Controllers
-- Endpoints
-- Integração com banco de dados
+Não inclui:
 
-O foco está exclusivamente na **modelagem das entidades e seus relacionamentos**.
+❌ Regras de negócio complexas na Infrastructure
+❌ Dados sensíveis no repositório
 
 ---
 
