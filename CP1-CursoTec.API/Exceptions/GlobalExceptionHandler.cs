@@ -29,16 +29,15 @@ public class GlobalExceptionHandler(ILogger<GlobalExceptionHandler> logger, IHos
                 => (StatusCodes.Status500InternalServerError, "Erro interno do servidor")
         };
 
-        if (status >= StatusCodes.Status500InternalServerError)
-        {
-            logger.LogError(exception, "Erro não tratado em {Method} {Path}",
-                httpContext.Request.Method, httpContext.Request.Path);
-        }
-        else
-        {
-            logger.LogWarning(exception, "Falha {Status} em {Method} {Path}: {Message}",
-                status, httpContext.Request.Method, httpContext.Request.Path, exception.Message);
-        }
+        // Nível Error em todos os casos, com o mesmo traceId devolvido na resposta (ProblemDetails).
+        // O detalhe (incluindo stack trace) fica somente no log, nunca na resposta HTTP.
+        logger.LogError(
+            exception,
+            "Erro {Status} ao processar {Method} {Path}. TraceId={TraceId}",
+            status,
+            httpContext.Request.Method,
+            httpContext.Request.Path,
+            httpContext.TraceIdentifier);
 
         var problem = new ProblemDetails
         {

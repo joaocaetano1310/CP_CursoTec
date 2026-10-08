@@ -12,7 +12,7 @@ namespace CP1_CursoTec.Controllers;
 [ApiController]
 [Route("api/cursos")]
 [Produces("application/json")]
-public class CursosController(IRepository<Curso> repository) : ControllerBase
+public class CursosController(IRepository<Curso> repository, ILogger<CursosController> logger) : ControllerBase
 {
     /// <summary>Lista todos os cursos.</summary>
     /// <returns>Lista de cursos cadastrados.</returns>
@@ -59,8 +59,16 @@ public class CursosController(IRepository<Curso> repository) : ControllerBase
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult<CursoResponse>> Create(CursoRequest request)
     {
+        logger.LogInformation(
+            "Iniciando criação de curso {Nome}. TraceId={TraceId}",
+            request.Nome, HttpContext.TraceIdentifier);
+
         var curso = new Curso(request.Nome, request.CargaHoraria, request.Descricao);
         await repository.AddAsync(curso);
+
+        logger.LogInformation(
+            "Curso {CursoId} criado com sucesso. TraceId={TraceId}",
+            curso.Id, HttpContext.TraceIdentifier);
 
         return CreatedAtAction(nameof(GetById), new { id = curso.Id }, ToResponse(curso));
     }
@@ -76,6 +84,10 @@ public class CursosController(IRepository<Curso> repository) : ControllerBase
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult<CursoResponse>> Update(Guid id, CursoRequest request)
     {
+        logger.LogInformation(
+            "Iniciando atualização do curso {CursoId}. TraceId={TraceId}",
+            id, HttpContext.TraceIdentifier);
+
         var curso = await repository.GetByIdAsync(id)
                     ?? throw new ResourceNotFoundException(nameof(Curso), id);
 
@@ -84,6 +96,11 @@ public class CursosController(IRepository<Curso> repository) : ControllerBase
         curso.UpdateDescricao(request.Descricao);
 
         await repository.UpdateAsync(curso);
+
+        logger.LogInformation(
+            "Curso {CursoId} atualizado com sucesso. TraceId={TraceId}",
+            curso.Id, HttpContext.TraceIdentifier);
+
         return Ok(ToResponse(curso));
     }
 
@@ -96,10 +113,19 @@ public class CursosController(IRepository<Curso> repository) : ControllerBase
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> Delete(Guid id)
     {
+        logger.LogInformation(
+            "Iniciando remoção do curso {CursoId}. TraceId={TraceId}",
+            id, HttpContext.TraceIdentifier);
+
         var curso = await repository.GetByIdAsync(id)
                     ?? throw new ResourceNotFoundException(nameof(Curso), id);
 
         await repository.DeleteAsync(curso);
+
+        logger.LogInformation(
+            "Curso {CursoId} removido com sucesso. TraceId={TraceId}",
+            id, HttpContext.TraceIdentifier);
+
         return NoContent();
     }
 

@@ -1,5 +1,6 @@
 using CP1_CursoTec.Application.DTO;
 using CP1_CursoTec.Application.Interfaces;
+using CP1_CursoTec.Application.Services;
 using CP1_CursoTec.Domain.Entities;
 using CP1_CursoTec.Domain.Exceptions;
 using Microsoft.AspNetCore.Mvc;
@@ -8,15 +9,15 @@ namespace CP1_CursoTec.Controllers;
 
 /// <summary>
 /// Consulta e criação de turmas. A leitura usa <see cref="ITurmaRepository"/>
-/// (carrega curso, professor e alunos); professor e curso são validados pelo repositório genérico.
+/// (carrega curso, professor e alunos); a criação é delegada ao <see cref="ITurmaService"/>.
 /// </summary>
 [ApiController]
 [Route("api/turmas")]
 [Produces("application/json")]
 public class TurmasController(
     ITurmaRepository turmaRepository,
-    IRepository<Professor> professorRepository,
-    IRepository<Curso> cursoRepository) : ControllerBase
+    ITurmaService turmaService,
+    ILogger<TurmasController> logger) : ControllerBase
 {
     /// <summary>Lista todas as turmas.</summary>
     [HttpGet]
@@ -64,22 +65,17 @@ public class TurmasController(
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult<TurmaResponse>> Create(TurmaRequest request)
     {
-        var professorId = request.ProfessorId!.Value;
-        var professor = await professorRepository.GetByIdAsync(professorId)
-                        ?? throw new ResourceNotFoundException(nameof(Professor), professorId);
+        logger.LogInformation(
+            "Iniciando criação de turma {Nome} para o professor {ProfessorId}. TraceId={TraceId}",
+            request.Nome, request.ProfessorId, HttpContext.TraceIdentifier);
 
-        Curso? curso = null;
-        if (request.CursoId.HasValue)
-        {
-            curso = await cursoRepository.GetByIdAsync(request.CursoId.Value)
-                    ?? throw new ResourceNotFoundException(nameof(Curso), request.CursoId.Value);
-        }
+        var turma = await turmaService.CriarAsync(request);
 
-        var turma = new Turma(request.Nome, request.DataInicio, request.DataFim, professor.Id, curso);
-        await turmaRepository.AddAsync(turma);
+        logger.LogInformation(
+            "Turma {TurmaId} criada com sucesso. TraceId={TraceId}",
+            turma.Id, HttpContext.TraceIdentifier);
 
-        var criada = await turmaRepository.GetByIdAsync(turma.Id) ?? turma;
-        return CreatedAtAction(nameof(GetById), new { id = turma.Id }, ToResponse(criada));
+        return CreatedAtAction(nameof(GetById), new { id = turma.Id }, ToResponse(turma));
     }
 
     private static TurmaResponse ToResponse(Turma turma) =>

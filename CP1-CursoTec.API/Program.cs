@@ -1,4 +1,5 @@
 using CP1_CursoTec.Application.Interfaces;
+using CP1_CursoTec.Application.Services;
 using CP1_CursoTec.Exceptions;
 using CP1_CursoTec.Extensions;
 using CP1_CursoTec.Infrastructure.Data;
@@ -24,6 +25,9 @@ public class Program
         builder.Services.AddScoped<ICursoRepository, CursoRepository>();
         builder.Services.AddScoped<IProfessorRepository, ProfessorRepository>();
         builder.Services.AddScoped<ITurmaRepository, TurmaRepository>();
+
+        // Serviços de aplicação
+        builder.Services.AddScoped<ITurmaService, TurmaService>();
 
         builder.Services.AddControllers();
         builder.Services.AddCursoTecSwagger(builder.Configuration);
