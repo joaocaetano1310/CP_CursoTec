@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
         <TargetFramework>net10.0</TargetFramework>
@@ -9,18 +9,6 @@
 
     <ItemGroup>
       <ProjectReference Include="..\CP1-CursoTec.Domain\CP1-CursoTec.Domain.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Compile Remove="Interfaces\Repositories\**" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <EmbeddedResource Remove="Interfaces\Repositories\**" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <None Remove="Interfaces\Repositories\**" />
     </ItemGroup>
 
 </Project>
