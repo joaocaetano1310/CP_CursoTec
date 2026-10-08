@@ -28,17 +28,29 @@ public class Program
         builder.Services.AddControllers();
         builder.Services.AddCursoTecSwagger(builder.Configuration);
 
+        // Verificações de saúde (GET /health)
+        builder.Services.AddCursoTecHealthChecks();
+
         // Tratamento global de erros (ProblemDetails)
         builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
         builder.Services.AddProblemDetails();
 
         var app = builder.Build();
 
-        // Cria/atualiza o banco aplicando as migrations pendentes
+        // Cria/atualiza o banco aplicando as migrations pendentes.
+        // Se o banco estiver indisponível, a falha é registrada e a API sobe mesmo assim:
+        // quem reporta o problema é o GET /health (503), em vez de a API simplesmente não iniciar.
         using (var scope = app.Services.CreateScope())
         {
-            var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-            db.Database.Migrate();
+            try
+            {
+                var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+                db.Database.Migrate();
+            }
+            catch (Exception ex)
+            {
+                app.Logger.LogError(ex, "Falha ao aplicar as migrations na inicialização. O banco pode estar indisponível.");
+            }
         }
 
         // Deve vir antes do Swagger e do MapControllers
@@ -57,6 +69,7 @@ public class Program
         app.UseHttpsRedirection();
         app.UseAuthorization();
         app.MapControllers();
+        app.MapCursoTecHealthChecks();
 
         app.Run();
     }

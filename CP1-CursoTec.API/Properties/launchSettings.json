@@ -10,6 +10,16 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
+    "http-db-invalido": {
+      "commandName": "Project",
+      "dotnetRunMessages": true,
+      "launchBrowser": false,
+      "applicationUrl": "http://localhost:5104",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "ConnectionStrings__DefaultConnection": "Data Source=pasta-inexistente/cursotec.db"
+      }
+    },
     "https": {
       "commandName": "Project",
       "dotnetRunMessages": true,
