@@ -1,6 +1,42 @@
 @CP1_CursoTec_HostAddress = http://localhost:5104
 
-GET {{CP1_CursoTec_HostAddress}}/weatherforecast/
+### Listar cursos
+GET {{CP1_CursoTec_HostAddress}}/api/cursos
 Accept: application/json
 
-###
+### Criar curso (201)
+POST {{CP1_CursoTec_HostAddress}}/api/cursos
+Content-Type: application/json
+
+{
+  "nome": "Desenvolvimento de Sistemas",
+  "cargaHoraria": 1200,
+  "descricao": "Curso técnico de desenvolvimento de sistemas"
+}
+
+### Curso inexistente (404 em ProblemDetails)
+GET {{CP1_CursoTec_HostAddress}}/api/cursos/00000000-0000-0000-0000-000000000001
+Accept: application/json
+
+### Payload inválido (400)
+POST {{CP1_CursoTec_HostAddress}}/api/cursos
+Content-Type: application/json
+
+{
+  "nome": "",
+  "cargaHoraria": 0
+}
+
+### Criar professor (201)
+POST {{CP1_CursoTec_HostAddress}}/api/professores
+Content-Type: application/json
+
+{
+  "nome": "Maria Souza",
+  "email": "maria.souza@cursotec.com",
+  "especialidade": "Banco de Dados"
+}
+
+### Listar turmas
+GET {{CP1_CursoTec_HostAddress}}/api/turmas
+Accept: application/json
