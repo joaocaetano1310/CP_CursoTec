@@ -6,7 +6,7 @@ public abstract class BaseEntity
 
     public bool Active { get; private set; } = true;
 
-    public DateTime CreatedAt { get; private set; } = DateTime.Now;
+    public DateTime CreatedAt { get; private set; } = DateTime.UtcNow;
     
     public void Deactivate() => Active = false;
     

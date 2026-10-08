@@ -1,60 +1,66 @@
 using CP1_CursoTec.Domain.Commom;
+using CP1_CursoTec.Domain.Exceptions;
 
 namespace CP1_CursoTec.Domain.Entities;
 
 public class Aluno : BaseEntity
 {
-    public Guid AlunoId { get; private set; }
     public string Nome { get; private set; } = string.Empty;
     public string Email { get; private set; } = string.Empty;
     public string Cpf { get; private set; } = string.Empty;
     public DateOnly DataNascimento { get; private set; }
     public Turma? Turma { get; private set; }
-    
+
+    // Para o EF Core
     protected Aluno() { }
 
-    public Aluno(string nome, string email, string cpf, DateOnly datanascimento, Turma? turma)
+    public Aluno(string nome, string email, string cpf, DateOnly dataNascimento)
     {
-        Nome = nome;
-        Email = email;
-        Cpf = cpf;
-        DataNascimento = datanascimento;
-        Turma = turma;
-    }
-    
-    public Aluno(string name, string email, DateOnly dateBorn)
-    {
-        UpdateNome(name);
+        UpdateNome(nome);
         UpdateEmail(email);
-        SetDataNascimento(dateBorn);
+        UpdateCpf(cpf);
+        SetDataNascimento(dataNascimento);
     }
-    
+
     public void UpdateNome(string newName)
     {
         if (string.IsNullOrWhiteSpace(newName))
-            throw new Exception("Nome não pode ser vazio.");
-        
+            throw new DomainException("Nome não pode ser vazio.");
+
         Nome = newName;
     }
 
     public void UpdateEmail(string newEmail)
     {
-        if (string.IsNullOrWhiteSpace(newEmail) || !newEmail.Contains("@"))
-            throw new Exception("E-mail inválido.");
-            
+        if (string.IsNullOrWhiteSpace(newEmail) || !newEmail.Contains('@'))
+            throw new DomainException("E-mail inválido.");
+
         Email = newEmail;
+    }
+
+    public void UpdateCpf(string newCpf)
+    {
+        if (string.IsNullOrWhiteSpace(newCpf))
+            throw new DomainException("CPF é obrigatório.");
+
+        Cpf = newCpf;
     }
 
     public void SetDataNascimento(DateOnly newDate)
     {
         var age = CalculateAge(newDate);
-        
+
         if (age < 17)
-            throw new Exception("Usuário deve ter pelo menos 17 anos.");
+            throw new DomainException("Usuário deve ter pelo menos 17 anos.");
 
         DataNascimento = newDate;
     }
-    
+
+    public void AtribuirTurma(Turma? turma)
+    {
+        Turma = turma;
+    }
+
     public int Age => CalculateAge(DataNascimento);
 
     private static int CalculateAge(DateOnly date)

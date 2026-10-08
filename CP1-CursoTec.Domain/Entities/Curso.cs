@@ -1,4 +1,5 @@
 using CP1_CursoTec.Domain.Commom;
+using CP1_CursoTec.Domain.Exceptions;
 
 namespace CP1_CursoTec.Domain.Entities;
 
@@ -22,7 +23,7 @@ public class Curso : BaseEntity
     public void UpdateNome(string newName)
     {
         if (string.IsNullOrWhiteSpace(newName))
-            throw new Exception("Nome não pode ser vazio.");
+            throw new DomainException("Nome não pode ser vazio.");
 
         Nome = newName;
     }
@@ -30,7 +31,7 @@ public class Curso : BaseEntity
     public void UpdateCargaHoraria(int cargaHoraria)
     {
         if (cargaHoraria <= 0)
-            throw new Exception("A carga horária deve ser maior que zero.");
+            throw new DomainException("A carga horária deve ser maior que zero.");
 
         CargaHoraria = cargaHoraria;
     }
