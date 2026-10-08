@@ -20,3 +20,8 @@ obj/
 
 # Database local
 *.db
+*.db-wal
+*.db-shm
+
+# Resultados de testes / cobertura
+TestResults/
