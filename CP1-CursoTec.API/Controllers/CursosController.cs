@@ -3,6 +3,8 @@ using CP1_CursoTec.Application.Interfaces;
 using CP1_CursoTec.Domain.Entities;
 using CP1_CursoTec.Domain.Exceptions;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
+using Asp.Versioning;
 
 namespace CP1_CursoTec.Controllers;
 
@@ -10,6 +12,7 @@ namespace CP1_CursoTec.Controllers;
 /// CRUD de cursos. Usa o repositório genérico <see cref="IRepository{T}"/>.
 /// </summary>
 [ApiController]
+[ApiVersionNeutral]
 [Route("api/cursos")]
 [Produces("application/json")]
 public class CursosController(IRepository<Curso> repository, ILogger<CursosController> logger) : ControllerBase
@@ -50,12 +53,17 @@ public class CursosController(IRepository<Curso> repository, ILogger<CursosContr
     ///     }
     ///
     /// O nome do curso é único: repetir um nome existente retorna 409.
+    ///
+    /// Limite de taxa: 10 requisições por minuto por IP. Acima disso retorna 429
+    /// com o cabeçalho <c>Retry-After</c>.
     /// </remarks>
     /// <param name="request">Dados do curso.</param>
     [HttpPost]
+    [EnableRateLimiting("escrita")]
     [ProducesResponseType(typeof(CursoResponse), StatusCodes.Status201Created)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status409Conflict)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status429TooManyRequests)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult<CursoResponse>> Create(CursoRequest request)
     {
