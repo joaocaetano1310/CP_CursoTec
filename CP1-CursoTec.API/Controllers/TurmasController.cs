@@ -1,3 +1,4 @@
+using Asp.Versioning;
 using CP1_CursoTec.Application.DTO;
 using CP1_CursoTec.Application.Interfaces;
 using CP1_CursoTec.Application.Services;
@@ -10,23 +11,52 @@ namespace CP1_CursoTec.Controllers;
 /// <summary>
 /// Consulta e criação de turmas. A leitura usa <see cref="ITurmaRepository"/>
 /// (carrega curso, professor e alunos); a criação é delegada ao <see cref="ITurmaService"/>.
+/// A listagem existe em duas versões: v1 (obsoleta, sem paginação) e v2 (paginada).
 /// </summary>
 [ApiController]
+[ApiVersion("1.0", Deprecated = true)]
+[ApiVersion("2.0")]
 [Route("api/turmas")]
+[Route("api/v{version:apiVersion}/turmas")]
 [Produces("application/json")]
 public class TurmasController(
     ITurmaRepository turmaRepository,
     ITurmaService turmaService,
     ILogger<TurmasController> logger) : ControllerBase
 {
-    /// <summary>Lista todas as turmas.</summary>
+    /// <summary>Lista todas as turmas (v1, OBSOLETA).</summary>
+    /// <remarks>Contrato antigo: devolve a lista inteira, sem paginação. Use a v2.</remarks>
     [HttpGet]
+    [MapToApiVersion("1.0")]
     [ProducesResponseType(typeof(IEnumerable<TurmaResponse>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
-    public async Task<ActionResult<IEnumerable<TurmaResponse>>> GetAll()
+    public async Task<ActionResult<IEnumerable<TurmaResponse>>> GetAllV1()
     {
         var turmas = await turmaRepository.GetAllAsync();
         return Ok(turmas.Select(ToResponse));
+    }
+
+    /// <summary>Lista turmas paginadas (v2).</summary>
+    /// <param name="page">Página, a partir de 1 (padrão 1).</param>
+    /// <param name="pageSize">Itens por página, de 1 a 100 (padrão 20).</param>
+    /// <remarks>Página além do total retorna 200 com <c>items</c> vazio.</remarks>
+    [HttpGet]
+    [MapToApiVersion("2.0")]
+    [ProducesResponseType(typeof(PagedResult<TurmaResponse>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
+    public async Task<ActionResult<PagedResult<TurmaResponse>>> GetAllV2(
+        [FromQuery] int page = 1,
+        [FromQuery] int pageSize = 20)
+    {
+        var resultado = await turmaService.ListarPaginadoAsync(page, pageSize);
+
+        return Ok(new PagedResult<TurmaResponse>(
+            resultado.Page,
+            resultado.PageSize,
+            resultado.TotalItems,
+            resultado.TotalPages,
+            resultado.Items.Select(ToResponse).ToList()));
     }
 
     /// <summary>Busca uma turma pelo id.</summary>
