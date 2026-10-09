@@ -4,6 +4,7 @@ using CP1_CursoTec.Application.Services;
 using CP1_CursoTec.Domain.Entities;
 using CP1_CursoTec.Domain.Exceptions;
 using Microsoft.AspNetCore.Mvc;
+using Asp.Versioning;
 
 namespace CP1_CursoTec.Controllers;
 
@@ -12,6 +13,7 @@ namespace CP1_CursoTec.Controllers;
 /// (carrega curso, professor e alunos); a criação é delegada ao <see cref="ITurmaService"/>.
 /// </summary>
 [ApiController]
+[ApiVersionNeutral]
 [Route("api/turmas")]
 [Produces("application/json")]
 public class TurmasController(
