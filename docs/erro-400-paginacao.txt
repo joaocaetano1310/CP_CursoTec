@@ -1,0 +1,7 @@
+HTTP/1.1 400 Bad Request
+Content-Type: application/json; charset=utf-8
+Date: Fri, 09 Oct 2026 15:01:02 GMT
+Server: Kestrel
+Transfer-Encoding: chunked
+
+{"type":"https://tools.ietf.org/html/rfc9110#section-15.5.1","title":"One or more validation errors occurred.","status":400,"errors":{"page":["The field page must be between 1 and 2147483647."],"pageSize":["The field pageSize must be between 1 and 50."]},"traceId":"00-1754d82c2a6e1631ed2b37ac962a45f9-7bceafced4f33911-00"}

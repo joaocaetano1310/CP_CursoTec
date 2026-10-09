@@ -1,0 +1,8 @@
+HTTP/1.1 429 Too Many Requests
+Content-Type: application/problem+json; charset=utf-8
+Date: Fri, 09 Oct 2026 15:02:20 GMT
+Server: Kestrel
+Retry-After: 30
+Transfer-Encoding: chunked
+
+{"title":"Muitas requisições","status":429,"detail":"Limite de 5 requisições a cada 30 segundos para a listagem de cursos. Aguarde e tente novamente.","traceId":"00-db493d1fe686a1d6857447a6a95aa478-f4f91d9ed9d255f0-00"}
