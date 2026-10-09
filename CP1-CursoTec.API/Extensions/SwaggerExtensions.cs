@@ -13,19 +13,15 @@ public static class SwaggerExtensions
         services.AddEndpointsApiExplorer();
         services.AddSwaggerGen(options =>
         {
-            options.SwaggerDoc("v1", new OpenApiInfo
-            {
-                Title = configuration["Swagger:Title"] ?? "CursoTec API",
-                Version = "v1",
-                Description = configuration["Swagger:Description"]
-            });
-
             // XML gerado por API e Application (DTOs) ficam na pasta de saída.
             foreach (var xmlFile in Directory.GetFiles(AppContext.BaseDirectory, "CP1-CursoTec.*.xml"))
             {
                 options.IncludeXmlComments(xmlFile, includeControllerXmlComments: true);
+                options.OperationFilter<DeprecatedOperationFilter>();
             }
         });
+        
+        services.ConfigureOptions<ConfigureSwaggerOptions>();
 
         return services;
     }
