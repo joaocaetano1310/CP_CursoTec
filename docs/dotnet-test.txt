@@ -1,17 +1,17 @@
 ﻿  Determinando os projetos a serem restaurados...
-C:\Users\Usuario\Documents\cp-cursotec-c#net\CP_CursoTec\CP1-CursoTec.Infrastructure\CP1-CursoTec.Infrastructure.csproj : warning NU1903: Package 'SQLitePCLRaw.lib.e_sqlite3' 2.1.11 has a known high severity vulnerability, https://github.com/advisories/GHSA-2m69-gcr7-jv3q [C:\Users\Usuario\Documents\cp-cursotec-c#net\CP_CursoTec\CP1-CursoTec.sln]
 C:\Users\Usuario\Documents\cp-cursotec-c#net\CP_CursoTec\CP1-CursoTec.API\CP1-CursoTec.API.csproj : warning NU1903: Package 'Microsoft.OpenApi' 2.4.1 has a known high severity vulnerability, https://github.com/advisories/GHSA-v5pm-xwqc-g5wc [C:\Users\Usuario\Documents\cp-cursotec-c#net\CP_CursoTec\CP1-CursoTec.sln]
+C:\Users\Usuario\Documents\cp-cursotec-c#net\CP_CursoTec\CP1-CursoTec.Infrastructure\CP1-CursoTec.Infrastructure.csproj : warning NU1903: Package 'SQLitePCLRaw.lib.e_sqlite3' 2.1.11 has a known high severity vulnerability, https://github.com/advisories/GHSA-2m69-gcr7-jv3q [C:\Users\Usuario\Documents\cp-cursotec-c#net\CP_CursoTec\CP1-CursoTec.sln]
 C:\Users\Usuario\Documents\cp-cursotec-c#net\CP_CursoTec\CP1-CursoTec.API\CP1-CursoTec.API.csproj : warning NU1903: Package 'SQLitePCLRaw.lib.e_sqlite3' 2.1.11 has a known high severity vulnerability, https://github.com/advisories/GHSA-2m69-gcr7-jv3q [C:\Users\Usuario\Documents\cp-cursotec-c#net\CP_CursoTec\CP1-CursoTec.sln]
-  Todos os projetos est├úo atualizados para restaura├º├úo.
+  Todos os projetos estão atualizados para restauração.
   CP1-CursoTec.Domain -> C:\Users\Usuario\Documents\cp-cursotec-c#net\CP_CursoTec\CP1-CursoTec.Domain\bin\Debug\net10.0\CP1-CursoTec.Domain.dll
   CP1-CursoTec.Application -> C:\Users\Usuario\Documents\cp-cursotec-c#net\CP_CursoTec\CP1-CursoTec.Application\bin\Debug\net10.0\CP1-CursoTec.Application.dll
   CP1-CursoTec.Domain.Tests -> C:\Users\Usuario\Documents\cp-cursotec-c#net\CP_CursoTec\CP1-CursoTec.Domain.Tests\bin\Debug\net10.0\CP1-CursoTec.Domain.Tests.dll
-Execu├º├úo de teste para C:\Users\Usuario\Documents\cp-cursotec-c#net\CP_CursoTec\CP1-CursoTec.Domain.Tests\bin\Debug\net10.0\CP1-CursoTec.Domain.Tests.dll (.NETCoreApp,Version=v10.0)
+Execução de teste para C:\Users\Usuario\Documents\cp-cursotec-c#net\CP_CursoTec\CP1-CursoTec.Domain.Tests\bin\Debug\net10.0\CP1-CursoTec.Domain.Tests.dll (.NETCoreApp,Version=v10.0)
+1 arquivos de teste no total corresponderam ao padrão especificado.
   CP1-CursoTec.Application.Tests -> C:\Users\Usuario\Documents\cp-cursotec-c#net\CP_CursoTec\CP1-CursoTec.Application.Tests\bin\Debug\net10.0\CP1-CursoTec.Application.Tests.dll
-Execu├º├úo de teste para C:\Users\Usuario\Documents\cp-cursotec-c#net\CP_CursoTec\CP1-CursoTec.Application.Tests\bin\Debug\net10.0\CP1-CursoTec.Application.Tests.dll (.NETCoreApp,Version=v10.0)
-1 arquivos de teste no total corresponderam ao padr├úo especificado.
-1 arquivos de teste no total corresponderam ao padr├úo especificado.
+Execução de teste para C:\Users\Usuario\Documents\cp-cursotec-c#net\CP_CursoTec\CP1-CursoTec.Application.Tests\bin\Debug\net10.0\CP1-CursoTec.Application.Tests.dll (.NETCoreApp,Version=v10.0)
+1 arquivos de teste no total corresponderam ao padrão especificado.
 
-Aprovado!  ÔÇô Com falha:     0, Aprovado:    34, Ignorado:     0, Total:    34, Dura├º├úo: 48 ms - CP1-CursoTec.Domain.Tests.dll (net10.0)
+Aprovado!  – Com falha:     0, Aprovado:    34, Ignorado:     0, Total:    34, Duração: 63 ms - CP1-CursoTec.Domain.Tests.dll (net10.0)
 
-Aprovado!  ÔÇô Com falha:     0, Aprovado:    10, Ignorado:     0, Total:    10, Dura├º├úo: 176 ms - CP1-CursoTec.Application.Tests.dll (net10.0)
+Aprovado!  – Com falha:     0, Aprovado:    10, Ignorado:     0, Total:    10, Duração: 155 ms - CP1-CursoTec.Application.Tests.dll (net10.0)
