@@ -1,0 +1,33 @@
+HTTP/1.1 200 OK
+Content-Type: application/json; charset=utf-8
+Date: Fri, 09 Oct 2026 15:02:36 GMT
+Server: Kestrel
+Cache-Control: no-store, no-cache
+Expires: Thu, 01 Jan 1970 00:00:00 GMT
+Pragma: no-cache
+Transfer-Encoding: chunked
+
+{
+  "status": "Healthy",
+  "totalDurationMs": 226.16,
+  "traceId": "0HNP62JSTUKUR:00000001",
+  "checks": [
+    {
+      "name": "self",
+      "status": "Healthy",
+      "durationMs": 0.77,
+      "description": "Processo no ar."
+    },
+    {
+      "name": "database",
+      "status": "Healthy",
+      "durationMs": 6.72
+    },
+    {
+      "name": "fiap-site",
+      "status": "Healthy",
+      "durationMs": 207.14,
+      "description": "https://www.fiap.com.br respondeu 200."
+    }
+  ]
+}

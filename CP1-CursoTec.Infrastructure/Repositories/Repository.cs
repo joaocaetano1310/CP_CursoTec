@@ -46,4 +46,19 @@ public class Repository<T>(ApplicationDbContext context) : IRepository<T> where 
     {
         return await _set.AsNoTracking().AnyAsync(e => e.Id == id);
     }
+
+    public async Task<(IReadOnlyList<T> Items, int TotalItems)> GetPagedAsync(int page, int pageSize)
+    {
+        var query = _set.AsNoTracking();
+
+        var total = await query.CountAsync();
+
+        var items = await query
+            .OrderBy(e => e.Id)
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
+            .ToListAsync();
+
+        return (items, total);
+    }
 }

@@ -11,6 +11,9 @@ public interface IRepository<T> where T : BaseEntity
     /// <summary>Retorna todas as entidades (leitura sem tracking).</summary>
     Task<IEnumerable<T>> GetAllAsync();
 
+    /// <summary>Retorna uma página de entidades (leitura sem tracking), em ordem fixa, junto com o total de itens.</summary>
+    Task<(IReadOnlyList<T> Items, int TotalItems)> GetPagedAsync(int page, int pageSize);
+
     /// <summary>Retorna a entidade com o id informado ou <c>null</c> se não existir.</summary>
     Task<T?> GetByIdAsync(Guid id);
 

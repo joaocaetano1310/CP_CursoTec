@@ -2,27 +2,61 @@ using CP1_CursoTec.Application.DTO;
 using CP1_CursoTec.Application.Interfaces;
 using CP1_CursoTec.Domain.Entities;
 using CP1_CursoTec.Domain.Exceptions;
+using CP1_CursoTec.Application.Common;
 using Microsoft.AspNetCore.Mvc;
+using Asp.Versioning;
+using Microsoft.AspNetCore.RateLimiting;
+using System.ComponentModel.DataAnnotations;
 
 namespace CP1_CursoTec.Controllers;
 
 /// <summary>
 /// CRUD de cursos. Usa o repositório genérico <see cref="IRepository{T}"/>.
+/// listagem em duas versões: v1 (obsoleta, lista simples) e v2 (paginada, com rate limit).
 /// </summary>
 [ApiController]
+[ApiVersion("1.0", Deprecated = true)]
+[ApiVersion("2.0")]
 [Route("api/cursos")]
 [Produces("application/json")]
 public class CursosController(IRepository<Curso> repository, ILogger<CursosController> logger) : ControllerBase
 {
-    /// <summary>Lista todos os cursos.</summary>
+    private const int MaxPageSize = 50;
+
+    /// <summary>Lista todos os cursos (v1, obsoleta: use a v2).</summary>
     /// <returns>Lista de cursos cadastrados.</returns>
     [HttpGet]
+    [MapToApiVersion("1.0")]
     [ProducesResponseType(typeof(IEnumerable<CursoResponse>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult<IEnumerable<CursoResponse>>> GetAll()
     {
         var cursos = await repository.GetAllAsync();
         return Ok(cursos.Select(ToResponse));
+    }
+
+    /// <summary>Lista cursos com paginação (v2).</summary>
+    /// <remarks>
+    /// Limite de 5 requisições a cada 30 segundos. Ao exceder, retorna 429 com o cabeçalho Retry-After.
+    /// </remarks>
+    /// <param name="page">Número da página, começando em 1 (padrão 1).</param>
+    /// <param name="pageSize">Itens por página, de 1 a 50 (padrão 10).</param>
+    /// <returns>Página de cursos com totalItems e totalPages.</returns>
+    [HttpGet]
+    [MapToApiVersion("2.0")]
+    [EnableRateLimiting("listagem")]
+    [ProducesResponseType(typeof(PagedResponse<CursoResponse>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status429TooManyRequests)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
+    public async Task<ActionResult<PagedResponse<CursoResponse>>> GetAllPaged(
+        [FromQuery, Range(1, int.MaxValue)] int page = 1,
+        [FromQuery, Range(1, MaxPageSize)] int pageSize = 10)
+    {
+        var (cursos, totalItems) = await repository.GetPagedAsync(page, pageSize);
+        var items = cursos.Select(ToResponse).ToList();
+
+        return Ok(PagedResponse<CursoResponse>.Create(items, page, pageSize, totalItems));
     }
 
     /// <summary>Busca um curso pelo id.</summary>

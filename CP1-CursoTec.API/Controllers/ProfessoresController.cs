@@ -3,6 +3,7 @@ using CP1_CursoTec.Application.Interfaces;
 using CP1_CursoTec.Domain.Entities;
 using CP1_CursoTec.Domain.Exceptions;
 using Microsoft.AspNetCore.Mvc;
+using Asp.Versioning;
 
 namespace CP1_CursoTec.Controllers;
 
@@ -10,6 +11,7 @@ namespace CP1_CursoTec.Controllers;
 /// Consulta e cadastro de professores. Usa o repositório genérico <see cref="IRepository{T}"/>.
 /// </summary>
 [ApiController]
+[ApiVersionNeutral]
 [Route("api/professores")]
 [Produces("application/json")]
 public class ProfessoresController(IRepository<Professor> repository) : ControllerBase
