@@ -8,5 +8,8 @@ public interface ITurmaRepository
     Task<IEnumerable<Turma>> GetAllAsync();
     Task AddAsync(Turma turma);
     Task UpdateAsync(Turma turma);
+    
+    Task<(IReadOnlyList<Turma> Items, int TotalItems)> GetPagedAsync(int page, int pageSize);
+    
     void Remove(Turma turma);
 }

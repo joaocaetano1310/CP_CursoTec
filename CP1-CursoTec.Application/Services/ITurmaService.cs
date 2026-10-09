@@ -12,4 +12,5 @@ public interface ITurmaService
     /// <exception cref="Domain.Exceptions.DomainException">Professor não informado ou dados da turma inválidos.</exception>
     /// <exception cref="Domain.Exceptions.ResourceNotFoundException">Professor ou curso inexistente.</exception>
     Task<Turma> CriarAsync(TurmaRequest request);
+    Task<PagedResult<Turma>> ListarPaginadoAsync(int page, int pageSize);
 }
