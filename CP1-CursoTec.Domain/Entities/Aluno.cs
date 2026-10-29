@@ -1,5 +1,6 @@
 using CP1_CursoTec.Domain.Commom;
 using CP1_CursoTec.Domain.Exceptions;
+using CP1_CursoTec.Domain.Enums;
 
 namespace CP1_CursoTec.Domain.Entities;
 
@@ -11,15 +12,22 @@ public class Aluno : BaseEntity
     public DateOnly DataNascimento { get; private set; }
     public Turma? Turma { get; private set; }
 
+    public string SenhaHash { get; private set; } = string.Empty;
+
+    public PapelUsuario Papel { get; private set; } = PapelUsuario.Aluno;
+
     // Para o EF Core
     protected Aluno() { }
 
-    public Aluno(string nome, string email, string cpf, DateOnly dataNascimento)
+    public Aluno(string nome, string email, string cpf, DateOnly dataNascimento,
+                 string senha, PapelUsuario papel = PapelUsuario.Aluno)
     {
         UpdateNome(nome);
         UpdateEmail(email);
         UpdateCpf(cpf);
         SetDataNascimento(dataNascimento);
+        DefinirSenha(senha);
+        Papel = papel;
     }
 
     public void UpdateNome(string newName)
@@ -60,6 +68,24 @@ public class Aluno : BaseEntity
     {
         Turma = turma;
     }
+
+    // Regra de senha fica no Domain: mínimo de 8 caracteres.
+    // A senha nunca é guardada em texto; só o hash (PBKDF2) vai para SenhaHash.
+    public void DefinirSenha(string senha)
+    {
+        if (string.IsNullOrWhiteSpace(senha) || senha.Length < 8)
+            throw new DomainException("Senha deve ter pelo menos 8 caracteres.");
+
+        SenhaHash = PasswordHasher.Hash(senha);
+    }
+
+    // Usado no login: confere a senha digitada contra o hash salvo.
+    public bool VerifyPassword(string senha) =>
+        !string.IsNullOrEmpty(senha)
+        && !string.IsNullOrEmpty(SenhaHash)
+        && PasswordHasher.Verify(senha, SenhaHash);
+
+    public void DefinirPapel(PapelUsuario papel) => Papel = papel;
 
     public int Age => CalculateAge(DataNascimento);
 
