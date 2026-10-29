@@ -10,6 +10,7 @@ using CP1_CursoTec.Infrastructure.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.EntityFrameworkCore;
+using CP1_CursoTec.API.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -97,6 +98,8 @@ builder.Services.AddCursoTecHealthChecks();
 // Tratamento global de erros (ProblemDetails)
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 builder.Services.AddProblemDetails();
+builder.Services.Configure<JwtOptions>(builder.Configuration.GetSection("Jwt"));
+
 
 var app = builder.Build();
 
