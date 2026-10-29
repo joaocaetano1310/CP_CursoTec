@@ -29,6 +29,22 @@ public class AlunoRepository : IAlunoRepository
         await _context.Alunos.AddAsync(aluno);
         await _context.SaveChangesAsync();
     }
+    
+    public async Task<Aluno?> GetByEmailAsync(string email)
+    {
+        var emailNormalizado = email.Trim().ToLower();
+
+        return await _context.Alunos
+            .FirstOrDefaultAsync(a => a.Email.ToLower() == emailNormalizado);
+    }
+
+    public async Task<bool> EmailExistsAsync(string email)
+    {
+        var emailNormalizado = email.Trim().ToLower();
+
+        return await _context.Alunos
+            .AnyAsync(a => a.Email.ToLower() == emailNormalizado);
+    }
 
     public void Update(Aluno aluno)
     {
