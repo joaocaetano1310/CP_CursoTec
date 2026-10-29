@@ -1,13 +1,16 @@
 using CP1_CursoTec.Domain.Entities;
+using CP1_CursoTec.Domain.Enums;
 using CP1_CursoTec.Domain.Exceptions;
 
-namespace CP1_CursoTec.Domain.Tests;
+// ATENÇÃO: mantenha aqui o mesmo namespace que já existia no topo do seu arquivo original.
+// namespace CP1_CursoTec.Domain.Tests;
 
 public class AlunoTests
 {
     private const string NomeValido = "Ana Souza";
     private const string EmailValido = "ana.souza@fiap.com.br";
     private const string CpfValido = "123.456.789-09";
+    private const string SenhaValida = "senha1234";
 
     private static DateOnly NascimentoComIdade(int anos) =>
         DateOnly.FromDateTime(DateTime.Today).AddYears(-anos);
@@ -19,7 +22,7 @@ public class AlunoTests
         var nascimento = NascimentoComIdade(20);
 
         // Act
-        var aluno = new Aluno(NomeValido, EmailValido, CpfValido, nascimento);
+        var aluno = new Aluno(NomeValido, EmailValido, CpfValido, nascimento, SenhaValida);
 
         // Assert
         Assert.Equal(NomeValido, aluno.Nome);
@@ -34,7 +37,7 @@ public class AlunoTests
     public void SetDataNascimento_IdadeExatamenteNoMinimo_Aceita()
     {
         // Arrange
-        var aluno = new Aluno(NomeValido, EmailValido, CpfValido, NascimentoComIdade(25));
+        var aluno = new Aluno(NomeValido, EmailValido, CpfValido, NascimentoComIdade(25), SenhaValida);
         var nascimento = NascimentoComIdade(17);
 
         // Act
@@ -56,7 +59,7 @@ public class AlunoTests
 
         // Act
         var excecao = Assert.Throws<DomainException>(
-            () => new Aluno(NomeValido, EmailValido, CpfValido, nascimento));
+            () => new Aluno(NomeValido, EmailValido, CpfValido, nascimento, SenhaValida));
 
         // Assert
         Assert.Equal("Usuário deve ter pelo menos 17 anos.", excecao.Message);
@@ -73,7 +76,7 @@ public class AlunoTests
 
         // Act
         var excecao = Assert.Throws<DomainException>(
-            () => new Aluno(NomeValido, email, CpfValido, nascimento));
+            () => new Aluno(NomeValido, email, CpfValido, nascimento, SenhaValida));
 
         // Assert
         Assert.Equal("E-mail inválido.", excecao.Message);
@@ -89,9 +92,78 @@ public class AlunoTests
 
         // Act
         var excecao = Assert.Throws<DomainException>(
-            () => new Aluno(NomeValido, EmailValido, cpf, nascimento));
+            () => new Aluno(NomeValido, EmailValido, cpf, nascimento, SenhaValida));
 
         // Assert
         Assert.Equal("CPF é obrigatório.", excecao.Message);
+    }
+
+    // ===== Testes novos do CP6: senha e papel =====
+
+    [Fact]
+    public void Construtor_SemPapelInformado_CriaComoAluno()
+    {
+        // Act
+        var aluno = new Aluno(NomeValido, EmailValido, CpfValido, NascimentoComIdade(20), SenhaValida);
+
+        // Assert
+        Assert.Equal(PapelUsuario.Aluno, aluno.Papel);
+    }
+
+    [Fact]
+    public void Construtor_SenhaNaoFicaEmTextoPuro()
+    {
+        // Act
+        var aluno = new Aluno(NomeValido, EmailValido, CpfValido, NascimentoComIdade(20), SenhaValida);
+
+        // Assert
+        Assert.False(string.IsNullOrEmpty(aluno.SenhaHash));
+        Assert.NotEqual(SenhaValida, aluno.SenhaHash);
+    }
+
+    [Fact]
+    public void VerifyPassword_SenhaCorreta_RetornaTrue()
+    {
+        // Arrange
+        var aluno = new Aluno(NomeValido, EmailValido, CpfValido, NascimentoComIdade(20), SenhaValida);
+
+        // Act
+        var resultado = aluno.VerifyPassword(SenhaValida);
+
+        // Assert
+        Assert.True(resultado);
+    }
+
+    [Theory]
+    [InlineData("outrasenha")]
+    [InlineData("SENHA1234")]
+    [InlineData("")]
+    public void VerifyPassword_SenhaErrada_RetornaFalse(string tentativa)
+    {
+        // Arrange
+        var aluno = new Aluno(NomeValido, EmailValido, CpfValido, NascimentoComIdade(20), SenhaValida);
+
+        // Act
+        var resultado = aluno.VerifyPassword(tentativa);
+
+        // Assert
+        Assert.False(resultado);
+    }
+
+    [Theory]
+    [InlineData("")]
+    [InlineData("   ")]
+    [InlineData("1234567")]
+    public void Construtor_SenhaInvalida_LancaDomainException(string senha)
+    {
+        // Arrange
+        var nascimento = NascimentoComIdade(20);
+
+        // Act
+        var excecao = Assert.Throws<DomainException>(
+            () => new Aluno(NomeValido, EmailValido, CpfValido, nascimento, senha));
+
+        // Assert
+        Assert.Equal("Senha deve ter pelo menos 8 caracteres.", excecao.Message);
     }
 }
