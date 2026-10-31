@@ -7,6 +7,7 @@ using CP1_CursoTec.Application.Services;
 using CP1_CursoTec.Exceptions;
 using CP1_CursoTec.Extensions;
 using CP1_CursoTec.Infrastructure.Data;
+using CP1_CursoTec.Infrastructure.Mongo;
 using CP1_CursoTec.Infrastructure.Repositories;
 using CP1_CursoTec.Security;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -71,6 +72,12 @@ builder.Services
     });
 
 builder.Services.AddAuthorization();
+
+// CP6 — MongoDB (histórico de recomendação), registrado antes dos health checks.
+// A connection string vem de ConnectionStrings:RecommendaMongo (user-secrets em Desenvolvimento).
+// String vazia → a API não sobe e explica como configurar.
+builder.Services.AddRecommendaMongo(builder.Configuration.GetConnectionString("RecommendaMongo"));
+builder.Services.AddScoped<IRecommendationLogService, RecommendationLogService>();
 
 builder.Services
     .AddApiVersioning(options =>
