@@ -1,3 +1,4 @@
+using System.Text;
 using System.Threading.RateLimiting;
 using Asp.Versioning;
 using Asp.Versioning.ApiExplorer;
@@ -7,9 +8,12 @@ using CP1_CursoTec.Exceptions;
 using CP1_CursoTec.Extensions;
 using CP1_CursoTec.Infrastructure.Data;
 using CP1_CursoTec.Infrastructure.Repositories;
+using CP1_CursoTec.Security;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using CP1_CursoTec.API.Options;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -28,6 +32,45 @@ builder.Services.AddScoped<ITurmaRepository, TurmaRepository>();
 
 // Serviços de aplicação
 builder.Services.AddScoped<ITurmaService, TurmaService>();
+builder.Services.AddScoped<IAlunoService, AlunoService>();
+builder.Services.AddScoped<IAuthService, AuthService>();
+
+// CP6 — Autenticação JWT
+// Issuer, Audience, Key e ExpirationMinutes vêm da seção "Jwt" do appsettings.json.
+builder.Services.Configure<JwtOptions>(builder.Configuration.GetSection("Jwt"));
+builder.Services.AddScoped<ITokenGenerator, JwtTokenGenerator>();
+
+var jwtOptions = builder.Configuration.GetSection("Jwt").Get<JwtOptions>()
+                 ?? throw new InvalidOperationException("Seção \"Jwt\" não encontrada no appsettings.json.");
+
+if (string.IsNullOrWhiteSpace(jwtOptions.Key) || Encoding.UTF8.GetByteCount(jwtOptions.Key) < 32)
+    throw new InvalidOperationException("Jwt:Key ausente ou com menos de 32 caracteres no appsettings.json.");
+
+builder.Services
+    .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        // Mantém os nomes curtos das claims ("role", "name", "email", "sub").
+        // Sem isso o .NET troca "role" por um URI longo e o [Authorize(Roles = ...)] não reconhece o papel.
+        options.MapInboundClaims = false;
+
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+
+            ValidIssuer = jwtOptions.Issuer,
+            ValidAudience = jwtOptions.Audience,
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtOptions.Key)),
+
+            RoleClaimType = "role",
+            NameClaimType = "name"
+        };
+    });
+
+builder.Services.AddAuthorization();
 
 builder.Services
     .AddApiVersioning(options =>
@@ -98,7 +141,6 @@ builder.Services.AddCursoTecHealthChecks();
 // Tratamento global de erros (ProblemDetails)
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 builder.Services.AddProblemDetails();
-builder.Services.Configure<JwtOptions>(builder.Configuration.GetSection("Jwt"));
 
 
 var app = builder.Build();
@@ -144,7 +186,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-app.UseAuthorization();
+app.UseAuthentication();       // CP6: lê e valida o token do cabeçalho Authorization
+app.UseAuthorization();        // CP6: aplica [Authorize] / [Authorize(Roles = ...)]
 app.UseRateLimiter();          // depois do UseExceptionHandler e antes do MapControllers
 app.MapControllers();
 app.MapCursoTecHealthChecks();

@@ -5,6 +5,7 @@ using CP1_CursoTec.Application.Services;
 using CP1_CursoTec.Domain.Entities;
 using CP1_CursoTec.Domain.Exceptions;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CP1_CursoTec.Controllers;
 
@@ -12,6 +13,7 @@ namespace CP1_CursoTec.Controllers;
 /// Consulta e criação de turmas. A leitura usa <see cref="ITurmaRepository"/>
 /// (carrega curso, professor e alunos); a criação é delegada ao <see cref="ITurmaService"/>.
 /// A listagem existe em duas versões: v1 (obsoleta, sem paginação) e v2 (paginada).
+/// As consultas são públicas; a criação exige token (CP6).
 /// </summary>
 [ApiController]
 [ApiVersion("1.0", Deprecated = true)]
@@ -73,8 +75,11 @@ public class TurmasController(
         return Ok(ToResponse(turma));
     }
 
-    /// <summary>Cria uma turma.</summary>
+    /// <summary>Cria uma turma (exige token).</summary>
     /// <remarks>
+    /// Exige o cabeçalho <c>Authorization: Bearer {token}</c> de qualquer usuário logado.
+    /// Sem token, responde 401.
+    ///
     /// Exemplo de corpo (use ids existentes de professor e, opcionalmente, de curso):
     ///
     ///     {
@@ -89,8 +94,10 @@ public class TurmasController(
     /// </remarks>
     /// <param name="request">Dados da turma.</param>
     [HttpPost]
+    [Authorize]
     [ProducesResponseType(typeof(TurmaResponse), StatusCodes.Status201Created)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult<TurmaResponse>> Create(TurmaRequest request)
