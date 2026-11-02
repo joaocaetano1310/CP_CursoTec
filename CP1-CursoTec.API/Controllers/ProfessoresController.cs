@@ -2,8 +2,9 @@ using CP1_CursoTec.Application.DTO;
 using CP1_CursoTec.Application.Interfaces;
 using CP1_CursoTec.Domain.Entities;
 using CP1_CursoTec.Domain.Exceptions;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Asp.Versioning;
 
 namespace CP1_CursoTec.Controllers;
 
@@ -12,6 +13,7 @@ namespace CP1_CursoTec.Controllers;
 /// As consultas são públicas; o cadastro exige o papel Admin (CP6).
 /// </summary>
 [ApiController]
+[ApiVersionNeutral]
 [Route("api/professores")]
 [Produces("application/json")]
 public class ProfessoresController(IRepository<Professor> repository) : ControllerBase

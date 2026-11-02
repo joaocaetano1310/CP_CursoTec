@@ -1,27 +1,32 @@
 using Asp.Versioning.ApiExplorer;
 using Microsoft.Extensions.Options;
-using Microsoft.OpenApi;
 using Swashbuckle.AspNetCore.SwaggerGen;
+using Microsoft.OpenApi;
 
 namespace CP1_CursoTec.Extensions;
 
-public class ConfigureSwaggerOptions(IApiVersionDescriptionProvider provider)
+/// <summary>
+/// Cria um documento do Swagger para cada versão da API encontrada pelo Asp.Versioning (v1, v2).
+/// Título e descrição vêm de Swagger:Title e Swagger:Description no appsettings.
+/// </summary>
+public class ConfigureSwaggerOptions(IApiVersionDescriptionProvider provider, IConfiguration config)
     : IConfigureOptions<SwaggerGenOptions>
 {
     public void Configure(SwaggerGenOptions options)
     {
-        foreach (var d in provider.ApiVersionDescriptions)
+        foreach (var description in provider.ApiVersionDescriptions)
         {
-            var descricao = "API do domínio CursoTec.";
-            if (d.IsDeprecated)
-                descricao += " **ESTA VERSÃO ESTÁ OBSOLETA (deprecated).** Use a v2.";
-
-            options.SwaggerDoc(d.GroupName, new OpenApiInfo
+            var info = new OpenApiInfo
             {
-                Title = "CursoTec API",
-                Version = d.ApiVersion.ToString(),
-                Description = descricao
-            });
+                Title = config["Swagger:Title"] ?? "CursoTec API",
+                Version = description.ApiVersion.ToString(),
+                Description = config["Swagger:Description"]
+            };
+
+            if (description.IsDeprecated)
+                info.Description += " ATENÇÃO: esta versão está obsoleta (deprecated). Use a v2.";
+
+            options.SwaggerDoc(description.GroupName, info);
         }
     }
 }
