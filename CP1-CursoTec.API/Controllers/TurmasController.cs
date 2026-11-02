@@ -1,34 +1,64 @@
+using Asp.Versioning;
 using CP1_CursoTec.Application.DTO;
 using CP1_CursoTec.Application.Interfaces;
 using CP1_CursoTec.Application.Services;
 using CP1_CursoTec.Domain.Entities;
 using CP1_CursoTec.Domain.Exceptions;
 using Microsoft.AspNetCore.Mvc;
-using Asp.Versioning;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CP1_CursoTec.Controllers;
 
 /// <summary>
 /// Consulta e criação de turmas. A leitura usa <see cref="ITurmaRepository"/>
 /// (carrega curso, professor e alunos); a criação é delegada ao <see cref="ITurmaService"/>.
+/// A listagem existe em duas versões: v1 (obsoleta, sem paginação) e v2 (paginada).
+/// As consultas são públicas; a criação exige token (CP6).
 /// </summary>
 [ApiController]
-[ApiVersionNeutral]
+[ApiVersion("1.0", Deprecated = true)]
+[ApiVersion("2.0")]
 [Route("api/turmas")]
+[Route("api/v{version:apiVersion}/turmas")]
 [Produces("application/json")]
 public class TurmasController(
     ITurmaRepository turmaRepository,
     ITurmaService turmaService,
     ILogger<TurmasController> logger) : ControllerBase
 {
-    /// <summary>Lista todas as turmas.</summary>
+    /// <summary>Lista todas as turmas (v1, OBSOLETA).</summary>
+    /// <remarks>Contrato antigo: devolve a lista inteira, sem paginação. Use a v2.</remarks>
     [HttpGet]
+    [MapToApiVersion("1.0")]
     [ProducesResponseType(typeof(IEnumerable<TurmaResponse>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
-    public async Task<ActionResult<IEnumerable<TurmaResponse>>> GetAll()
+    public async Task<ActionResult<IEnumerable<TurmaResponse>>> GetAllV1()
     {
         var turmas = await turmaRepository.GetAllAsync();
         return Ok(turmas.Select(ToResponse));
+    }
+
+    /// <summary>Lista turmas paginadas (v2).</summary>
+    /// <param name="page">Página, a partir de 1 (padrão 1).</param>
+    /// <param name="pageSize">Itens por página, de 1 a 100 (padrão 20).</param>
+    /// <remarks>Página além do total retorna 200 com <c>items</c> vazio.</remarks>
+    [HttpGet]
+    [MapToApiVersion("2.0")]
+    [ProducesResponseType(typeof(PagedResult<TurmaResponse>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
+    public async Task<ActionResult<PagedResult<TurmaResponse>>> GetAllV2(
+        [FromQuery] int page = 1,
+        [FromQuery] int pageSize = 20)
+    {
+        var resultado = await turmaService.ListarPaginadoAsync(page, pageSize);
+
+        return Ok(new PagedResult<TurmaResponse>(
+            resultado.Page,
+            resultado.PageSize,
+            resultado.TotalItems,
+            resultado.TotalPages,
+            resultado.Items.Select(ToResponse).ToList()));
     }
 
     /// <summary>Busca uma turma pelo id.</summary>
@@ -45,8 +75,11 @@ public class TurmasController(
         return Ok(ToResponse(turma));
     }
 
-    /// <summary>Cria uma turma.</summary>
+    /// <summary>Cria uma turma (exige token).</summary>
     /// <remarks>
+    /// Exige o cabeçalho <c>Authorization: Bearer {token}</c> de qualquer usuário logado.
+    /// Sem token, responde 401.
+    ///
     /// Exemplo de corpo (use ids existentes de professor e, opcionalmente, de curso):
     ///
     ///     {
@@ -61,8 +94,10 @@ public class TurmasController(
     /// </remarks>
     /// <param name="request">Dados da turma.</param>
     [HttpPost]
+    [Authorize]
     [ProducesResponseType(typeof(TurmaResponse), StatusCodes.Status201Created)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult<TurmaResponse>> Create(TurmaRequest request)

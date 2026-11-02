@@ -5,6 +5,10 @@ using Microsoft.OpenApi;
 
 namespace CP1_CursoTec.Extensions;
 
+/// <summary>
+/// Cria um documento do Swagger para cada versão da API encontrada pelo Asp.Versioning (v1, v2).
+/// Título e descrição vêm de Swagger:Title e Swagger:Description no appsettings.
+/// </summary>
 public class ConfigureSwaggerOptions(IApiVersionDescriptionProvider provider, IConfiguration config)
     : IConfigureOptions<SwaggerGenOptions>
 {

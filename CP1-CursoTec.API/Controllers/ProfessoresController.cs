@@ -2,6 +2,7 @@ using CP1_CursoTec.Application.DTO;
 using CP1_CursoTec.Application.Interfaces;
 using CP1_CursoTec.Domain.Entities;
 using CP1_CursoTec.Domain.Exceptions;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Asp.Versioning;
 
@@ -9,6 +10,7 @@ namespace CP1_CursoTec.Controllers;
 
 /// <summary>
 /// Consulta e cadastro de professores. Usa o repositório genérico <see cref="IRepository{T}"/>.
+/// As consultas são públicas; o cadastro exige o papel Admin (CP6).
 /// </summary>
 [ApiController]
 [ApiVersionNeutral]
@@ -40,8 +42,11 @@ public class ProfessoresController(IRepository<Professor> repository) : Controll
         return Ok(ToResponse(professor));
     }
 
-    /// <summary>Cadastra um professor.</summary>
+    /// <summary>Cadastra um professor (exige papel Admin).</summary>
     /// <remarks>
+    /// Exige o cabeçalho <c>Authorization: Bearer {token}</c> de um usuário com papel <c>Admin</c>.
+    /// Sem token, responde 401. Com token de outro papel (ex.: <c>Aluno</c>), responde 403.
+    ///
     /// Exemplo de corpo:
     ///
     ///     {
@@ -54,8 +59,11 @@ public class ProfessoresController(IRepository<Professor> repository) : Controll
     /// </remarks>
     /// <param name="request">Dados do professor.</param>
     [HttpPost]
+    [Authorize(Roles = "Admin")]
     [ProducesResponseType(typeof(ProfessorResponse), StatusCodes.Status201Created)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status409Conflict)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult<ProfessorResponse>> Create(ProfessorRequest request)

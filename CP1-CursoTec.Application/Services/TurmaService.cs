@@ -35,4 +35,19 @@ public class TurmaService(
         // Recarrega com Professor/Curso/Alunos para devolver o agregado completo.
         return await turmaRepository.GetByIdAsync(turma.Id) ?? turma;
     }
+    
+    public const int PageSizeMaximo = 100;
+
+    public async Task<PagedResult<Turma>> ListarPaginadoAsync(int page, int pageSize)
+    {
+        if (page < 1)
+            throw new DomainException("O parâmetro 'page' deve ser um inteiro maior ou igual a 1.");
+        if (pageSize < 1 || pageSize > PageSizeMaximo)
+            throw new DomainException($"O parâmetro 'pageSize' deve estar entre 1 e {PageSizeMaximo}.");
+
+        var (items, total) = await turmaRepository.GetPagedAsync(page, pageSize);
+        var totalPages = (int)Math.Ceiling(total / (double)pageSize);
+
+        return new PagedResult<Turma>(page, pageSize, total, totalPages, items);
+    }
 }

@@ -45,6 +45,28 @@ public class TurmaRepository : ITurmaRepository
         _context.Turmas.Update(turma);
         await _context.SaveChangesAsync();
     }
+    
+    public async Task<(IReadOnlyList<Turma> Items, int TotalItems)> GetPagedAsync(int page, int pageSize)
+    {
+        var query = _context.Turmas
+            .AsNoTracking()
+            .OrderBy(t => t.CreatedAt)   
+            .ThenBy(t => t.Id);          
+
+        var total = await query.CountAsync();
+
+        
+        long skip = (long)(page - 1) * pageSize;
+        if (skip >= total)
+            return (Array.Empty<Turma>(), total);   
+
+        var items = await query
+            .Skip((int)skip)
+            .Take(pageSize)
+            .ToListAsync();                
+
+        return (items, total);
+    }
 
     public void Remove(Turma turma)
     {
